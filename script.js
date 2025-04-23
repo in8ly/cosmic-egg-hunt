@@ -44,7 +44,7 @@ let messageType = 'normal'; // 'normal' or 'win'
 let gameOver = false; // Flag to indicate the hunt has ended
 let messageTimer = null; // Timer to control message display duration
 
-// Initialize stars and eggs
+// Initialize stars
 for (let i = 0; i < 100; i++) {
     stars.push({
         x: Math.random() * canvas.width,
@@ -56,11 +56,27 @@ for (let i = 0; i < 100; i++) {
     });
 }
 
-// Initialize 10 unique eggs
-for (let i = 0; i < 10; i++) {
-    let eggIndex;
+// Initialize the first few eggs immediately
+for (let i = 0; i < 3; i++) {
+    spawnNewEgg();
+}
+
+// Spawn the remaining eggs over time
+let eggsToSpawn = 7;
+let eggSpawnInterval = setInterval(function() {
+    if (eggsToSpawn > 0 && !gameOver) {
+        spawnNewEgg();
+        eggsToSpawn--;
+    } else {
+        clearInterval(eggSpawnInterval);
+    }
+}, 5000); // Spawn a new egg every 5 seconds
+
+// Function to spawn a new egg
+function spawnNewEgg() {
     let attempts = 0;
     let foundValidStar = false;
+    let eggIndex;
     
     // Try to find a star that isn't already an egg
     while (!foundValidStar && attempts < 100) {
