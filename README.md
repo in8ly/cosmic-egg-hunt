@@ -13,4 +13,4 @@ This game was created as a heartfelt way to share Easter magic with my grown son
 - HTML + CSS (for layout and styling)  
 
 This project is a special tribute to family, tradition, and a little cosmic magic. 💖  
-(Coded by Grok and Trouble Shooted by Co-Pilot)  
+(Coded by Grok and Trouble Shooted by Co-Pilot and Claude Sonnet 3.7)  
