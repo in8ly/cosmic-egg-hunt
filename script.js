@@ -104,7 +104,13 @@ function spawnNewEgg() {
     while (!foundValidStar && attempts < 100) {
         eggIndex = Math.floor(Math.random() * stars.length);
         if (!stars[eggIndex].isEgg) {
-            foundValidStar = true;
+            // Check if star is in a good visible area (not too close to edges)
+            const x = stars[eggIndex].x;
+            const y = stars[eggIndex].y;
+            
+            if (x > 30 && x < canvas.width - 30 && y > 30 && y < canvas.height - 30) {
+                foundValidStar = true;
+            }
         }
         attempts++;
     }
@@ -119,10 +125,10 @@ function spawnNewEgg() {
         eggs.push(stars[eggIndex]);
         console.log("Egg spawned. Total eggs: " + eggs.length);
     } else {
-        // If we couldn't find an unused star after 100 attempts, create a new one
+        // Create a new egg within safe boundaries
         const newEgg = {
-            x: Math.random() * canvas.width,
-            y: Math.random() * canvas.height,
+            x: 40 + Math.random() * (canvas.width - 80), // Safe margin
+            y: 40 + Math.random() * (canvas.height - 80), // Safe margin
             radius: 5 + Math.random() * 3,
             opacity: 1,
             speed: Math.random() * 0.02 + 0.01,
@@ -139,9 +145,9 @@ function spawnNewEgg() {
 
 // Function to respawn a single egg
 function respawnEgg(egg) {
-    if (gameOver) return; // Don’t respawn if the game is over
-    egg.x = Math.random() * canvas.width;
-    egg.y = Math.random() * canvas.height;
+    if (gameOver) return; // Don't respawn if the game is over
+    egg.x = 40 + Math.random() * (canvas.width - 80);
+    egg.y = 40 + Math.random() * (canvas.height - 80);
     egg.color = "hsl(" + (Math.random() * 360) + ", 70%, 60%)";
     egg.found = false;
 }
