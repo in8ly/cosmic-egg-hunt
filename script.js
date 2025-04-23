@@ -61,19 +61,20 @@ for (let i = 0; i < 3; i++) {
     spawnNewEgg();
 }
 
+// Spawn the remaining eggs at regular intervals
 let eggsToSpawn = 7;
-let eggSpawnInterval = setInterval(function() {
+let spawnTimer = setInterval(function() {
     if (eggsToSpawn > 0 && !gameOver) {
         spawnNewEgg();
         eggsToSpawn--;
-        clearInterval(eggSpawnInterval);
-        if (eggsToSpawn > 0) {
-            eggSpawnInterval = setInterval(arguments.callee, Math.random() * 2000 + 1000); // Random interval between 1 and 3 seconds
+        
+        if (eggsToSpawn === 0) {
+            clearInterval(spawnTimer);
         }
     } else {
-        clearInterval(eggSpawnInterval);
+        clearInterval(spawnTimer);
     }
-}, 3000); // Reduced to 3 seconds
+}, 3000); // Spawn a new egg every 3 seconds
 
 // Function to spawn a new egg
 function spawnNewEgg() {
