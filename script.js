@@ -76,6 +76,22 @@ let spawnTimer = setInterval(function() {
     }
 }, 3000); // Spawn a new egg every 3 seconds
 
+// Add after your other timers
+let hintTimer = setTimeout(function() {
+    if (eggsFound < eggsToWin && !gameOver) {
+        // Briefly highlight an unfound egg
+        const unfoundEggs = eggs.filter(egg => !egg.found);
+        if (unfoundEggs.length > 0) {
+            const hintEgg = unfoundEggs[0];
+            createMiniSparkles(hintEgg.x, hintEgg.y);
+            currentMessage = "Hint: Look around for glowing cosmic eggs!";
+            setTimeout(() => {
+                currentMessage = "Welcome to the Cosmic Egg Hunt! Find " + (eggsToWin - eggsFound) + " more eggs!";
+            }, 2000);
+        }
+    }
+}, 30000); // Show hint after 30 seconds of play
+
 // Function to spawn a new egg
 function spawnNewEgg() {
     let attempts = 0;
