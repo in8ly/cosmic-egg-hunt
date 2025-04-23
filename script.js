@@ -280,7 +280,14 @@ canvas.addEventListener("click", function(e) {
             eggsFound++;
             console.log("Egg found! Count: " + eggsFound + " / " + eggsToWin);
             const orb = document.getElementById("insightOrb");
-
+            // Add pause after the last egg to allow reading the virtue
+            if (eggsFound >= eggsToWin) {
+                setTimeout(() => {
+                    orb.classList.add("show");
+                }, 2000);
+            } else {
+                orb.classList.add("show");
+            }
             if (eggsFound >= eggsToWin) {
                 currentMessage = "Congratulations! You've found 10 cosmic eggs! Click the Cosmic Insight orb for a special message! 🌟";
                 messageType = "win";
