@@ -63,24 +63,20 @@ for (let i = 0; i < 3; i++) {
 
 // Spawn the remaining eggs at regular intervals
 let eggsToSpawn = 7;
+let spawnCounter = 0;
 let spawnTimer = setInterval(function() {
     if (eggsToSpawn > 0 && !gameOver) {
         spawnNewEgg();
         eggsToSpawn--;
+        spawnCounter++;
         
+        // Only clear the interval when all eggs are spawned
         if (eggsToSpawn === 0) {
             clearInterval(spawnTimer);
+            console.log("All eggs spawned: " + spawnCounter);
         }
-        
-        // Reset interval with random timing
-        clearInterval(spawnTimer);
-        if (eggsToSpawn > 0) {
-            spawnTimer = setInterval(arguments.callee, 2000 + Math.random() * 4000); // Between 2-6 seconds
-        }
-    } else {
-        clearInterval(spawnTimer);
     }
-}, 2000 + Math.random() * 4000); // Initial random delay
+}, 3000); // Spawn a new egg every 3 seconds
 
 // Add after your other timers
 let hintTimer = setTimeout(function() {
@@ -121,6 +117,7 @@ function spawnNewEgg() {
         stars[eggIndex].twinkleSpeed = 0.01 + Math.random() * 0.03; // Each egg twinkles differently
         stars[eggIndex].twinklePhase = Math.random() * Math.PI * 2; // Random starting phase
         eggs.push(stars[eggIndex]);
+        console.log("Egg spawned. Total eggs: " + eggs.length);
     } else {
         // If we couldn't find an unused star after 100 attempts, create a new one
         const newEgg = {
@@ -275,6 +272,7 @@ canvas.addEventListener("click", function(e) {
         if (dist < egg.radius + 10) {
             egg.found = true;
             eggsFound++;
+            console.log("Egg found! Count: " + eggsFound + " / " + eggsToWin);
             const orb = document.getElementById("insightOrb");
 
             if (eggsFound >= eggsToWin) {
