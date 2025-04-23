@@ -242,10 +242,9 @@ canvas.addEventListener("click", function(e) {
                 messageType = "win";
                 orb.classList.add("show");
                 createSparkles();
-                gameOver = true; // Set gameOver immediately to prevent further egg collection
-                // Clear all eggs
+                gameOver = true; 
                 eggs.forEach(function(egg) {
-                    egg.found = true; // Mark all eggs as found to hide them
+                    egg.found = true;
                 });
             } else {
                 // Find an unused treasure
@@ -260,14 +259,13 @@ canvas.addEventListener("click", function(e) {
                 // Display the treasure message
                 currentMessage = "You found a cosmic egg! Treasure: " + randomTreasure;
                 messageType = "normal";
-                if (messageTimer) clearTimeout(messageTimer); // Clear any existing timer
+                if (messageTimer) clearTimeout(messageTimer);
                 messageTimer = setTimeout(function() {
                     currentMessage = "Welcome to the Cosmic Egg Hunt! Find " + (eggsToWin - eggsFound) + " more eggs!";
                     messageType = "normal";
-                }, 2000); // Show treasure message for 2 seconds
-                setTimeout(function() {
-                    respawnEgg(egg);
-                }, 1500); // Respawn egg after 1.5 seconds
+                }, 2000);
+                
+                // No respawn for the last egg
             }
         }
     });
