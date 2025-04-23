@@ -71,10 +71,16 @@ let spawnTimer = setInterval(function() {
         if (eggsToSpawn === 0) {
             clearInterval(spawnTimer);
         }
+        
+        // Reset interval with random timing
+        clearInterval(spawnTimer);
+        if (eggsToSpawn > 0) {
+            spawnTimer = setInterval(arguments.callee, 2000 + Math.random() * 4000); // Between 2-6 seconds
+        }
     } else {
         clearInterval(spawnTimer);
     }
-}, 3000); // Spawn a new egg every 3 seconds
+}, 2000 + Math.random() * 4000); // Initial random delay
 
 // Add after your other timers
 let hintTimer = setTimeout(function() {
@@ -109,19 +115,25 @@ function spawnNewEgg() {
     
     if (foundValidStar) {
         stars[eggIndex].isEgg = true;
-        stars[eggIndex].radius = 6;
-        stars[eggIndex].color = "hsl(" + (Math.random() * 360) + ", 70%, 60%)";
+        stars[eggIndex].radius = 5 + Math.random() * 3; // Random sizes between 5-8
+        stars[eggIndex].color = "hsl(" + (Math.random() * 360) + ", 80%, 65%)";
         stars[eggIndex].found = false;
+        stars[eggIndex].twinkleSpeed = 0.01 + Math.random() * 0.03; // Each egg twinkles differently
+        stars[eggIndex].twinklePhase = Math.random() * Math.PI * 2; // Random starting phase
         eggs.push(stars[eggIndex]);
     } else {
         // If we couldn't find an unused star after 100 attempts, create a new one
         const newEgg = {
             x: Math.random() * canvas.width,
             y: Math.random() * canvas.height,
-            radius: 6,
-            color: "hsl(" + (Math.random() * 360) + ", 70%, 60%)",
+            radius: 5 + Math.random() * 3,
+            opacity: 1,
+            speed: Math.random() * 0.02 + 0.01,
+            color: "hsl(" + (Math.random() * 360) + ", 80%, 65%)",
             isEgg: true,
-            found: false
+            found: false,
+            twinkleSpeed: 0.01 + Math.random() * 0.03,
+            twinklePhase: Math.random() * Math.PI * 2
         };
         stars.push(newEgg);
         eggs.push(newEgg);
@@ -183,14 +195,22 @@ function animateStars() {
             ctx.beginPath();
             ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
             if (star.isEgg) {
-                ctx.shadowBlur = 10;
+                // Calculate twinkle effect
+                const twinkleAmount = Math.sin(Date.now() * star.twinkleSpeed + star.twinklePhase) * 0.3 + 0.7;
+                
+                ctx.shadowBlur = 10 + 5 * twinkleAmount;
                 ctx.shadowColor = star.color;
                 ctx.fillStyle = star.color;
+                ctx.globalAlpha = twinkleAmount;
                 ctx.fill();
+                ctx.globalAlpha = 1;
+                
+                // Inner highlight
                 ctx.beginPath();
-                ctx.arc(star.x, star.y, star.radius / 3, 0, Math.PI * 2);
-                ctx.fillStyle = "rgba(255, 255, 0.5)";
+                ctx.arc(star.x, star.y, star.radius * 0.4, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255, 255, 255, ${twinkleAmount * 0.7})`;
                 ctx.fill();
+                ctx.shadowBlur = 0;
             } else {
                 ctx.fillStyle = "rgba(255, 255, 255, " + star.opacity + ")";
                 ctx.fill();
