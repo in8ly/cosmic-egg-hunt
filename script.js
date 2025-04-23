@@ -35,6 +35,8 @@ const treasures = [
     "✨ Kindness"
 ];
 
+const foundTreasureIndices = [];
+
 let eggsFound = 0;
 const eggsToWin = 10;
 let currentMessage = "Welcome to the Cosmic Egg Hunt! Find 10 eggs to unlock a special Cosmic Insight. Love, Vibe Coding Mama 💖";
@@ -217,7 +219,6 @@ canvas.addEventListener("click", function(e) {
         if (dist < egg.radius + 10) {
             egg.found = true;
             eggsFound++;
-            const randomTreasure = treasures[Math.floor(Math.random() * treasures.length)];
             const orb = document.getElementById("insightOrb");
 
             if (eggsFound >= eggsToWin) {
@@ -231,7 +232,16 @@ canvas.addEventListener("click", function(e) {
                     egg.found = true; // Mark all eggs as found to hide them
                 });
             } else {
-                // Display the treasure message for 2 seconds before reverting to the default message
+                // Find an unused treasure
+                let randomIndex;
+                do {
+                    randomIndex = Math.floor(Math.random() * treasures.length);
+                } while (foundTreasureIndices.includes(randomIndex) && foundTreasureIndices.length < treasures.length);
+                
+                foundTreasureIndices.push(randomIndex);
+                const randomTreasure = treasures[randomIndex];
+                
+                // Display the treasure message
                 currentMessage = "You found a cosmic egg! Treasure: " + randomTreasure;
                 messageType = "normal";
                 if (messageTimer) clearTimeout(messageTimer); // Clear any existing timer
