@@ -54,14 +54,39 @@ for (let i = 0; i < 100; i++) {
     });
 }
 
-for (let i = 0; i < 5; i++) {
-    const eggIndex = Math.floor(Math.random() * stars.length);
-    if (!stars[eggIndex].isEgg) {
+// Initialize 10 unique eggs
+for (let i = 0; i < 10; i++) {
+    let eggIndex;
+    let attempts = 0;
+    let foundValidStar = false;
+    
+    // Try to find a star that isn't already an egg
+    while (!foundValidStar && attempts < 100) {
+        eggIndex = Math.floor(Math.random() * stars.length);
+        if (!stars[eggIndex].isEgg) {
+            foundValidStar = true;
+        }
+        attempts++;
+    }
+    
+    if (foundValidStar) {
         stars[eggIndex].isEgg = true;
         stars[eggIndex].radius = 6;
         stars[eggIndex].color = "hsl(" + (Math.random() * 360) + ", 70%, 60%)";
         stars[eggIndex].found = false;
         eggs.push(stars[eggIndex]);
+    } else {
+        // If we couldn't find an unused star after 100 attempts, create a new one
+        const newEgg = {
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            radius: 6,
+            color: "hsl(" + (Math.random() * 360) + ", 70%, 60%)",
+            isEgg: true,
+            found: false
+        };
+        stars.push(newEgg);
+        eggs.push(newEgg);
     }
 }
 
