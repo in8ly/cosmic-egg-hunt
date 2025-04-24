@@ -279,26 +279,25 @@ canvas.addEventListener("click", function(e) {
             egg.found = true;
             eggsFound++;
             console.log("Egg found! Count: " + eggsFound + " / " + eggsToWin);
-            const orb = document.getElementById("insightOrb");
-            // Add pause after the last egg to allow reading the virtue
+            
             if (eggsFound >= eggsToWin) {
-                setTimeout(() => {
-                    orb.classList.add("show");
-                }, 2000);
-            } else {
-                orb.classList.add("show");
-            }
-            if (eggsFound >= eggsToWin) {
+                // All 10 eggs found - show completion message and orb
                 currentMessage = "Congratulations! You've found 10 cosmic eggs! Click the Cosmic Insight orb for a special message! 🌟";
                 messageType = "win";
-                orb.classList.add("show");
-                createSparkles();
+                
+                // Show the orb after a short delay
+                setTimeout(() => {
+                    const orb = document.getElementById("insightOrb");
+                    orb.classList.add("show");
+                    createSparkles();
+                }, 2000);
+                
                 gameOver = true; 
                 eggs.forEach(function(egg) {
                     egg.found = true;
                 });
             } else {
-                // Find an unused treasure
+                // Regular egg found - show virtue
                 let randomIndex;
                 do {
                     randomIndex = Math.floor(Math.random() * treasures.length);
@@ -307,16 +306,14 @@ canvas.addEventListener("click", function(e) {
                 foundTreasureIndices.push(randomIndex);
                 const randomTreasure = treasures[randomIndex];
                 
-                // Display the treasure message
                 currentMessage = "You found a cosmic egg! Treasure: " + randomTreasure;
                 messageType = "normal";
+                
                 if (messageTimer) clearTimeout(messageTimer);
                 messageTimer = setTimeout(function() {
                     currentMessage = "Welcome to the Cosmic Egg Hunt! Find " + (eggsToWin - eggsFound) + " more eggs!";
                     messageType = "normal";
-                }, 2000);
-                
-                // No respawn for the last egg
+                }, 3000); // Extended from 2000ms to 3000ms for better readability
             }
         }
     });
