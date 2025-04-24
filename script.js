@@ -311,8 +311,8 @@ canvas.addEventListener("click", function(e) {
                 
                 if (messageTimer) clearTimeout(messageTimer);
                 messageTimer = setTimeout(function() {
-                    // Only show welcome message if we're not at game end
-                    if (eggsFound < eggsToWin) {
+                    // Don't reset message if game is over
+                    if (!gameOver) {
                         currentMessage = "Find " + (eggsToWin - eggsFound) + " more cosmic eggs!";
                         messageType = "normal";
                     }
