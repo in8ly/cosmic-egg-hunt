@@ -311,9 +311,12 @@ canvas.addEventListener("click", function(e) {
                 
                 if (messageTimer) clearTimeout(messageTimer);
                 messageTimer = setTimeout(function() {
-                    currentMessage = "Welcome to the Cosmic Egg Hunt! Find " + (eggsToWin - eggsFound) + " more eggs!";
-                    messageType = "normal";
-                }, 3000); // Extended from 2000ms to 3000ms for better readability
+                    // Only show welcome message if we're not at game end
+                    if (eggsFound < eggsToWin) {
+                        currentMessage = "Find " + (eggsToWin - eggsFound) + " more cosmic eggs!";
+                        messageType = "normal";
+                    }
+                }, 3000);
             }
         }
     });
